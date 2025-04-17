@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tax Invoice</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+    @media print {
+        @page {
+            size: A4 portrait;
+            margin: 10mm 10mm 15mm 10mm; /* top, right, bottom, left */
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-size: 12pt;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+        .no-print {
+            display: none !important;
+        }
+        .invoice-box {
+            border: none;
+            box-shadow: none;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+        table {
+            page-break-inside: avoid !important;
+        }
+    }
+
+    body {
+        font-size: 14px;
+    }
+
+    .invoice-box {
+        border: 1px solid #000;
+        padding: 20px;
+        background: #fff;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .table-bordered td, .table-bordered th {
+        border: 1px solid #000 !important;
+    }
+
+    .borderless td, .borderless th {
+        border: none !important;
+    }
+
+    /* Remove container padding for tighter layout */
+    .container {
+        padding-left: 1;
+        padding-right: 1;
+        max-width: 100%;
+    }
+</style>
+
+</head>
+<body>
+
+
+<div class="container mt-3 invoice-box">
+<!-- TAX INVOICE HEADER ON TOP -->
+<div class="text-center mt-3">
+            <h2 class="text-uppercase"><u>Tax Invoice</u></h2>
+        </div>
+    <!-- Header Row -->
+    <div class="row align-items-center mb-3">
+        <div class="col-6">
+            <h5><strong>DK COAL SHOP</strong></h5>
+            <p class="mb-1">SOUTH SHANPUT SAHAPARA, DASNAGAR, HOWRAH</p>
+            <p class="mb-1">GSTIN/UIN: 19EUPPK9538G1ZT</p>
+            <p class="mb-1">STATE NAME: West Bengal, Code: 19</p>
+            <p class="mb-1">Phone: +91-9876543210</p>
+            <p class="mb-1">Email: info@dkcoalshop.com</p>
+        </div>
+        
+    </div>
+
+    <!-- Invoice Details -->
+    <table class="table table-bordered mb-2">
+        <tr>
+            <th>Invoice No.</th>
+            <td th:text="${txn.id}"></td>
+            <th>Dated</th>
+            <td th:text="${txn.date}"></td>
+             <th>Reference No. & Date</th>
+            <td>2025-26/003 Dt. 7-Apr-25</td>
+            <th>Buyer's Order No.</th>
+            <td>00000</td>
+            <th>Dispatch Document No.</th>
+            <td>D00000</td>
+        </tr>
+        <tr>
+            <th>Vehicle No.</th>
+            <td th:text="${txn.vehicleNo}"></td>
+            <th>Place of Supply</th>
+            <!-- <td>West Bengal</td>placeOfSupply -->
+            <td th:text="${txn.placeOfSupply}"></td>
+            
+           
+        </tr>
+        
+    </table>
+
+    <!-- Buyer and Consignee Info -->
+    <table class="table table-bordered mb-2">
+        <tr>
+            <th>Buyer (Bill To)</th>
+            <th>Consignee (Ship To)</th>
+        </tr>
+        <tr>
+            <td>
+                <strong th:text="${txn.customerName}"></strong><br/>
+                Address: <span th:text="${txn.customerAddress}"/><br/>
+                GSTIN: <span th:text="${txn.customerGstNo}"/>
+            </td>
+            <td>
+                <strong th:text="${txn.customerName}"></strong><br/>
+                Address: <span th:text="${txn.customerAddress}"/><br/>
+                GSTIN: <span th:text="${txn.customerGstNo}"/><br/><br/>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Item Table -->
+    <table class="table table-bordered text-center mb-2">
+        <thead class="table-light">
+            <tr>
+                <th>Sl. No</th>
+                <th>Description of Goods</th>
+                <th>HSN Code</th>
+                <th>Qty (Kg)</th>
+                <th>Rate (₹/Kg)</th>
+                <th>Amount (₹)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Coal</td>
+                <td th:text="${txn.hsnCode}"></td>
+                <td th:text="${txn.weight}"></td>
+                <td th:text="${txn.rate}"></td>
+                <td th:text="${txn.amount}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+   
+ 
+ <!-- Tax and Total -->
+ 
+<table class="table table-bordered mb-3 text-end">
+    <tr>
+        <th colspan="5" class="text-end">CGST @ <span th:text="${txn.gstPercent.divide(2)}"></span>%</th>
+        <td th:text="${txn.gstAmount.divide(2)}"></td>
+    </tr>
+    <tr>
+        <th colspan="5" class="text-end">SGST @ <span th:text="${txn.gstPercent.divide(2)}"></span>%</th>
+        <td th:text="${txn.gstAmount.divide(2)}"></td>
+    </tr>
+    <tr>
+        <th colspan="5" class="text-end">Total GST</th>
+        <td th:text="${txn.gstAmount}"></td>
+    </tr>
+    <tr>
+        <th colspan="5" class="text-end">Total Amount</th>
+        <td th:text="${txn.totalAmount}"></td>
+    </tr>
+    <tr>
+        <th colspan="5" class="text-start">Total Amount In Words:</th>
+        <td class="text-start" th:text="${txn.totalAmountInWords}"></td>
+    </tr>
+</table>
+
+    <!-- Footer Info -->
+    <div class="row mt-4">
+        <div class="col-6">
+            <p><strong>Bank Details:</strong><br/>
+            A/C No: 123456789012<br/>
+            IFSC: BKID000XXXX<br/>
+            Bank: Bank of India, Howrah Branch</p>
+        </div>
+        <div class="col-6 text-end">
+            <p>For <strong>DK COAL SHOP</strong></p>
+            <br/><br/>
+            <p>Authorized Signatory</p>
+        </div>
+    </div>
+
+    <p class="text-center mt-4">Thank you for your business!</p>
+
+    <div class="text-center no-print mt-3">
+        <button class="btn btn-primary" onclick="window.print()">Print Invoice</button>
+        <a href="/sales" class="btn btn-secondary ms-2">Back</a>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>About - DK Coal Shop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #212529, #495057);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            animation: slideIn 1.2s ease-in-out;
+        }
+
+        @keyframes slideIn {
+            0% { transform: translateY(-100px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        .card {
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .contact-info i {
+            color: #0d6efd;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark bg-dark mb-4">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">DK Coal Shop</a>
+        <div class="d-flex ms-auto">
+            <a class="btn btn-outline-light me-2" href="/">Home</a>
+            <a class="btn btn-outline-light" href="/about">About</a>
+            <a class="btn btn-outline-light" href="/sales">Sales</a>
+            
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<div class="hero-section">
+    <h1 class="display-4">About DK Coal Shop</h1>
+    <p class="lead mt-3">Serving quality coal & coke with trust, transparency, and timely delivery.</p>
+</div>
+
+<!-- Content Section -->
+<div class="container mt-5">
+    <div class="row g-5">
+        <!-- About Info -->
+        <div class="col-md-7">
+            <h3 class="mb-3">Who We Are</h3>
+            <p>
+                DK Coal Shop is a reputed supplier and trader of coal and coke products in West Bengal. 
+                Our mission is to ensure high-quality delivery of industrial fuels to our clients across the region, 
+                maintaining long-term trust and satisfaction. We deal in multiple grades and provide full tax invoicing 
+                for every transaction. Our operations ensure weight accuracy, timely transport, and professional service.
+            </p>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="col-md-5">
+            <div class="card p-4 shadow">
+                <h4 class="mb-3">Contact Us</h4>
+                <div class="contact-info">
+                    <p><i class="bi bi-geo-alt-fill"></i><strong>Address:</strong> SOUTH SHANPUT SAHAPARA, DASNAGAR, HOWRAH</p>
+                    <p><i class="bi bi-telephone-fill"></i><strong>Phone:</strong> +91-9876543210</p>
+                    <p><i class="bi bi-envelope-fill"></i><strong>Email:</strong> info@dkcoalshop.com</p>
+                    <p><i class="bi bi-globe"></i><strong>GSTIN:</strong> 19EUPPK9538G1ZT</p>
+                </div>
+                <div class="mt-3">
+                    <a href="mailto:info@dkcoalshop.com" class="btn btn-primary">Send an Email</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap Icons CDN -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.js"></script>
+
+
+<!-- Footer -->
+
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>
