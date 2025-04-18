@@ -1,0 +1,54 @@
+<!-- <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Item Entry</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        form {
+            width: 300px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+        label, input {
+            display: block;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+        button {
+            background: green;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+        }
+        .message {
+            margin-top: 10px;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <h2>Item Entry Form</h2>
+    
+    <form th:action="@{/submit}" th:object="${item}" method="post">
+        <label for="name">Item Name:</label>
+        <input type="text" id="name" th:field="*{name}" required>
+
+        <label for="price">Price:</label>
+        <input type="number" id="price" th:field="*{price}" step="0.01" required>
+
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" th:field="*{quantity}" required>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <p class="message" th:if="${message}" th:text="${message}"></p>
+</body>
+</html>
+ -->

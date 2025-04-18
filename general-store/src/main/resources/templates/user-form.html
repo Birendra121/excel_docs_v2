@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Entry Form</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+           /*  height: 90vh; */
+            width: 100%;
+            height: auto;
+   			min-height: 90vh;
+    		overflow-x: hidden; /* Prevents horizontal scrolling */
+    		overflow-y: auto; /* Allows vertical scrolling */
+        }
+        
+		        /* Main Content */
+		.main-content {
+		    margin-top: 80px; /* Prevent content from overlapping navbar */
+		    padding: 20px;
+		    width: 90%;
+		    max-width: 800px;
+		    background: white;
+		    border-radius: 8px;
+		    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+		}
+
+        /* Navigation Bar */
+        .navbar {
+            width: 100%;
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 50px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            box-sizing: border-box;
+            z-index: 1000;
+        }
+
+        /* Logo Styling */
+        .logo {
+            height: 50px;
+        }
+
+        .logo-left {
+            margin-right: auto; /* Push left logo to the far left */
+        }
+
+        .logo-right {
+            margin-left: auto; /* Push right logo to the far right */
+        }
+
+        /* Navigation Links (Centered) */
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%); /* Center the nav links */
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            background-color: #575757;
+            border-radius: 5px;
+        }
+
+        /* Form Container */
+        .form-container {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 400px;
+            margin-top: 80px; /* Push down form to avoid navbar overlap */
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        /* Form Styling */
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        input {
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 95%;
+        }
+
+        /* Button Styling */
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .submit {
+            background: green;
+            color: white;
+            margin-right: 5px;
+        }
+
+        .submit:hover {
+            background: darkgreen;
+        }
+
+        .reset {
+            background: red;
+            color: white;
+            margin-left: 5px;
+        }
+
+        .reset:hover {
+            background: darkred;
+        }
+
+        /* Success Message */
+        .message {
+            text-align: center;
+            color: green;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+
+    <script>
+        function submitForm(event) {
+            event.preventDefault(); // ✅ Prevent page reload
+
+            var form = document.getElementById("userForm");
+            var formData = new FormData(form);
+
+            fetch("/submit", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.text()) // ✅ Get response as text
+            .then(data => {
+                document.getElementById("message").innerText = data;
+                form.reset(); // ✅ Clear form fields
+                setTimeout(() => {
+                    document.getElementById("message").innerText = ""; // ✅ Hide message after 3 seconds
+                }, 5000);
+            })
+            .catch(error => console.error("Error:", error));
+        }
+
+        function clearForm() {
+            document.getElementById("userForm").reset(); // ✅ Clear form manually
+        }
+    </script>
+
+</head>
+<body>
+
+    <!-- Navigation Bar with Logos & Centered Links -->
+    <div class="navbar">
+        <img th:src="@{/images/hcltech.png}" alt="HCL Logo" class="logo logo-left">
+
+	
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">About</a>
+            <a href="#">Services</a>
+            <a href="#">Contact</a>
+        </div>
+	 
+        <img th:src="@{/images/avis-fleetpro.png}" alt="FleetPro Logo" class="logo logo-right">
+    </div>
+
+    <!-- Form Section -->
+    <div class="form-container">
+        <h2>Car Benefits</h2>
+
+        <form id="userForm" onsubmit="submitForm(event)">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="mobileNumber">Mobile Number:</label>
+            <input type="tel" id="mobileNumber" name="mobileNumber" pattern="[0-9]{10}" maxlength="10" required>
+            
+            <div class="button-container">
+                <button type="submit" class="submit">Submit</button>
+                <button type="button" class="reset" onclick="clearForm()">Clear</button>
+            </div>
+        </form>
+
+        <p class="message" id="message"></p>
+    </div>
+
+</body>
+</html>
