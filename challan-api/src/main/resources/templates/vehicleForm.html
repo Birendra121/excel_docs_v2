@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Vehicle Form</title>
+<link rel="stylesheet" th:href="@{/css/style.css}" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    	$(document).ready(function() {
+    $('form').submit(function() {
+        // Show loading spinner
+        $('<div class="spinner"></div>').appendTo('.container');
+        
+        // Optional: Disable submit button to prevent multiple submissions
+        $('button[type="submit"]').prop('disabled', true);
+
+        // Simulate delay (for demo purposes only)
+        setTimeout(function() {
+            // Hide loading spinner
+            $('.spinner').remove();
+
+            // Optional: Enable submit button after action completes
+            $('button[type="submit"]').prop('disabled', false);
+        }, 3000); // Replace with actual form submission logic
+    });
+});
+   
+  </script>
+</head>
+<body>
+	<nav>
+        <!-- <div class="logo">AVIS</div> -->
+        <div class="logo">
+         	<a href="/" th:href="@{/home}">
+         		<img src="/logo/logo.png" alt="AVIS Logo"> <!-- Replace with actual logo path -->
+         	</a>
+         </div>
+        <ul>
+            <li><a href="#home" th:href="@{/home}">Home</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="#logout" th:href="@{/logout}">Logout</a></li>
+        </ul>
+    </nav><br>
+	<div class="container">
+		<h1>Enter Vehicle Number</h1>
+		<form action="#" th:action="@{/vehicle}" th:object="${vehicle}"
+			method="post">
+			<div>
+				<label for="number">Vehicle Number: </label> 
+				<input type="text" id="number" th:field="*{number}" required style="text-transform: uppercase;" />
+			</div>
+
+
+			<div>
+				<button type="submit">Get Challan Details</button>
+			</div>
+			<!-- <div th:if="${errorMessage}" class="error-message">
+				<p th:text="${errorMessage}"></p>
+			</div>
+			<div th:if="${noChalanMessage}" class="info-message">
+                <p th:text="${noChalanMessage}"></p>
+            </div> -->
+            
+            <div th:if="${errorMessage}">
+        <p th:text="${errorMessage}" style="color: red;"></p>
+    </div>
+    <div th:if="${noChalanMessage}">
+        <p th:text="${noChalanMessage}" style="color: orange;"></p>
+    </div>
+    <!--  service timeout error message  -->
+    <div th:if="${errorMessageGateway}" class="error-message">
+    <p th:text="${errorMessageGateway}" style="color: red;"></p>
+</div>
+    <div th:if="${walletWarning}" class="alert alert-warning">
+    <strong>Warning:</strong> <span th:text="${walletWarning}"></span>
+</div>
+		</form>
+	</div>
+
+
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Upload Vehicle Numbers</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- <script>
+    	$(document).ready(function() {
+    $('form').submit(function() {
+        // Show loading spinner
+        $('<div class="spinner"></div>').appendTo('.container');
+        
+        // Optional: Disable submit button to prevent multiple submissions
+        $('button[type="submit"]').prop('disabled', true);
+
+        // Simulate delay (for demo purposes only)
+        setTimeout(function() {
+            // Hide loading spinner
+            $('.spinner').remove();
+
+            // Optional: Enable submit button after action completes
+            $('button[type="submit"]').prop('disabled', false);
+        }, 3000); // Replace with actual form submission logic
+    });
+});
+    </script> -->
+   
+   
+    <style>
+        #progress-container {
+            width: 100%;
+            background-color: #f3f3f3;
+            border-radius: 5px;
+            margin-top: 20px;
+            display: none; /* Hide initially */
+        }
+
+        #progress-bar {
+            width: 0%;
+            height: 30px;
+            background-color: #4caf50;
+            border-radius: 5px;
+            text-align: center;
+            line-height: 30px;
+            color: white;
+        }
+        
+         /* Progress bar styles here if needed */
+        #download-button-container {
+            text-align: right; /* Aligns the button to the right */
+            margin-top: 20px;  /* Adds space above the button */
+        }
+
+        #progress-container {
+            margin-top: 20px;
+        }
+        
+    </style>
+    
+    <script>
+        $(document).ready(function() {
+            // Handle form submission and progress bar
+            $('form').submit(function(event) {
+                event.preventDefault(); // Prevent default form submission
+
+                // Optional: Disable submit button to prevent multiple submissions
+                $('button[type="submit"]').prop('disabled', true);
+
+                // Show the progress bar container
+                $('#progress-container').show();
+
+                // Initialize progress
+                let progress = 0;
+                const progressBar = $('#progress-bar');
+
+                // Simulate file processing progress
+                const interval = setInterval(function() {
+                    if (progress < 100) {
+                        progress += 10; // Adjust this value to simulate faster/slower progress
+                        progressBar.css('width', progress + '%');
+                        progressBar.text(progress + '%');
+                    } else {
+                        clearInterval(interval);
+                        progressBar.text('Processing Complete, Please wait for Result !!');
+                        // Submit the form after processing is complete
+                        $('form')[0].submit();
+                    }
+                }, 500); // Adjust the interval time as needed
+            });
+
+            // Handle download button click for all challan details
+            $('#download-challan-btn').click(function() {
+                $.ajax({
+                    url: '/challan-excel',
+                    type: 'GET',
+                    xhrFields: {
+                        responseType: 'blob' // to handle binary data
+                    },
+                    success: function(data) {
+                        const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                        const downloadUrl = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = downloadUrl;
+                        a.download = 'challan_details.xlsx';
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(downloadUrl);
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Error: ' + error);
+                    }
+                });
+            });
+
+            // Handle download link for last processed challan details
+            $('#last-processed-download-link').click(function(event) {
+                event.preventDefault(); // Prevent default link behavior
+                $.ajax({
+                    url: '/download-last-processed-challan-details',
+                    type: 'GET',
+                    xhrFields: {
+                        responseType: 'blob' // to handle binary data
+                    },
+                    success: function(data) {
+                        const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                        const downloadUrl = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = downloadUrl;
+                        a.download = 'last_processed_challan_details.xlsx'; // Adjust filename if needed
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(downloadUrl);
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Error: ' + error);
+                    }
+                });
+            });
+        });
+    </script>
+
+ </head>
+<body>
+<nav>
+        <!-- <div class="logo">AVIS</div> -->
+        <div class="logo">
+         	<a href="/" th:href="@{/home}">
+         		<img src="/logo/logo.png" alt="AVIS Logo"> <!-- Replace with actual logo path -->
+         	</a>
+         </div>
+        <ul>
+            <li><a href="#home" th:href="@{/home}">Home</a></li>
+            <li><a href="#index" th:href="@{/index}">Index</a></li>
+            <!-- <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li> -->
+            <li><a href="#logout" th:href="@{/logout}">Logout</a></li>
+        </ul>
+    </nav>
+   <!-- Download Challan Button (Standalone) it will download all challan details-->
+        <div id="download-button-container">
+            <button id="download-challan-btn" class="btn btn-success">Download All Challan Details</button>
+        </div>
+        
+    <h1>Upload Vehicle Numbers</h1>
+    <div class="container">
+        <div th:if="${message}">
+            <p th:text="${message}" class="success-message"></p>
+        </div>
+        <div th:if="${errorMessage}">
+            <p th:text="${errorMessage}" class="error-message"></p>
+        </div><div th:if="${noChallans}">
+            <p th:text="${noChallans}"></p>
+        </div>
+        
+        <form action="#" th:action="@{/upload}" th:object="${file}" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="file">Choose Excel file:</label>
+                <input type="file" id="file" name="file" class="form-control" required />
+            </div><br>
+            <button type="submit" class="btn btn-primary">Upload</button>
+        </form>
+        
+        <div id="progress-container">
+        <div id="progress-bar">0%</div>
+    </div>
+    
+    <!-- Download link for last processed challan details -->
+<div th:if="${downloadLink}" id="last-processed-download-link" style="margin-top: 20px;">
+    <a th:href="${downloadLink}" class="btn btn-success">Download Last Processed Challan Details</a>
+</div>
+    
+    <!-- Download Link -->
+     <!--  <div th:if="${vehicleNumbersWithChallans}">
+            <a href="#" th:href="@{/download-challan-details}" class="btn btn-success">Download Challan Details</a>
+        </div>  -->
+        
+     
+</div>
+        
+   
+</body>
+</html>

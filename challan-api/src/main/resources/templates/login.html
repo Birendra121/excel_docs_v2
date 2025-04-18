@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login</title>      
+ <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f4f4f4;
+            justify-content: center;
+            align-items: center;
+        }
+        nav {
+            background-color: #333;
+            color: white;
+            padding: 15px 20px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+        }
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+         nav .logo img {
+            height: 40px; /* Adjust the height as needed */
+            margin-left:20px;
+            vertical-align: middle;
+        }
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        nav ul li {
+            margin-left: 20px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            margin-top: 0px; /* Adjusted for fixed navbar */
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center all children */
+        }
+        .form-group {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            
+        }
+        label {
+            margin-bottom: 5px;
+            color: #555;
+        }
+        input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button, a {
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            align-items: center;
+            text-decoration: none;
+        }
+         
+        
+        button:hover {
+            background-color: #0056b3;
+        }
+        .error {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+ </head>
+<body>
+	 <nav>
+        <div class="logo">AVIS</div>
+         	
+        
+    </nav>
+
+<div class="container">
+
+
+<h1>Login</h1>
+<form th:action="@{/login}" method="post">
+    <div class="form-group">
+        <label for="username">Email</label>
+        <input type="email" id="username" name="username" placeholder="Please enter email to login" required/>
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter here password" required />
+    </div>
+    <div>
+        <button type="submit">Login</button>
+        <a href="#" th:href="@{/register}">Register</a></li>
+    </div>
+</form>
+<div th:if="${error}" th:text="${error}" class="error"></div>
+	
+ 	<div th:if="${logoutMessage}" th:text="${logoutMessage}" class="logout"></div>
+</div>
+
+<footer>
+        &copy; 2024 AVIS. All rights reserved.
+    </footer>
+</body>
+</html>
